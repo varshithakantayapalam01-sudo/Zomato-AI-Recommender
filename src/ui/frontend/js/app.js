@@ -10,7 +10,9 @@
 (function () {
   "use strict";
 
-  const API_BASE = "/api/v1";
+  // In production (Vercel), config.js sets window.RAILWAY_API_URL to the Railway backend URL.
+  // In local dev, config.js sets it to "" so we fall back to the relative /api/v1 path.
+  const API_BASE = (window.RAILWAY_API_URL || "") + "/api/v1";
 
   // ── DOM References ──────────────────────────────────────
   const locationSelect  = document.getElementById("location-select");

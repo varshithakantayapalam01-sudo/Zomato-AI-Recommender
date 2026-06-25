@@ -69,6 +69,10 @@ def create_app() -> FastAPI:
             "http://127.0.0.1:8000",
             "http://localhost:3000",
             "http://127.0.0.1:3000",
+            # Production Vercel deployment
+            "https://zomato-ai-recommender.vercel.app",
+            # Vercel preview deployments (branch/PR deploys)
+            "https://zomato-ai-recommender-git-main-varshithakantayapalam01-sudos.vercel.app",
         ],
         allow_credentials=True,
         allow_methods=["*"],
@@ -82,6 +86,14 @@ def create_app() -> FastAPI:
     if os.path.isdir(_FRONTEND_DIR):
         application.mount("/css", StaticFiles(directory=os.path.join(_FRONTEND_DIR, "css")), name="css")
         application.mount("/js", StaticFiles(directory=os.path.join(_FRONTEND_DIR, "js")), name="js")
+
+        @application.get("/config.js", include_in_schema=False)
+        async def serve_config():
+            """Serve the runtime API URL config used by app.js."""
+            return FileResponse(
+                os.path.join(_FRONTEND_DIR, "config.js"),
+                media_type="application/javascript",
+            )
 
         @application.get("/", include_in_schema=False)
         async def serve_frontend():
