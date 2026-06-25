@@ -19,9 +19,10 @@ env/
 .env
 
 # Local Cache / Data
-data/restaurants.parquet
+# NOTE: restaurants.parquet is intentionally committed (294 KB) so Railway
+# can load the pre-built dataset without downloading from HuggingFace
+# (which crashes low-memory Railway containers).
 data/restaurants.csv
-data/*.parquet
 data/*.csv
 
 # IDE / Editors
