@@ -3,13 +3,15 @@ FastAPI application factory for the Restaurant Recommendation API.
 
 Responsibilities:
 - Configure CORS middleware for frontend consumption.
-- Load the dataset once during the lifespan (not per-request).
+- Load the dataset once during the lifespan in a background thread so the
+  server starts accepting requests (and passing health checks) immediately.
 - Mount the v1 API router.
 - Serve the frontend SPA via StaticFiles.
 """
 
 import logging
 import os
+import threading
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -34,22 +36,36 @@ async def lifespan(application: FastAPI):
     """
     Startup / shutdown lifecycle.
 
-    On startup:
-      1. Load the RestaurantRepository (downloads + caches dataset on first run).
-      2. Create a shared RecommendationService instance.
-      3. Inject both into the route module.
+    Dataset loading is offloaded to a daemon background thread so that
+    uvicorn begins serving immediately. The health endpoint returns
+    ``status: "starting"`` while the data is still loading, and transitions
+    to ``status: "healthy"`` once the thread completes.
+
+    This prevents Railway's health-check from timing out during the
+    first-boot HuggingFace dataset download (which can take 60-120 s).
     """
-    logger.info("Starting up: loading dataset...")
-    repo = RestaurantRepository.load()
-    svc = RecommendationService()
-    set_dependencies(repo, svc)
-    logger.info(
-        "Dataset loaded: %d restaurants, %d locations, %d cuisines",
-        len(repo.get_all()),
-        len(repo.get_locations()),
-        len(repo.get_cuisines()),
-    )
+    def _load_data() -> None:
+        logger.info("Background thread: loading dataset...")
+        try:
+            repo = RestaurantRepository.load()
+            svc = RecommendationService()
+            set_dependencies(repo, svc)
+            logger.info(
+                "Background thread: dataset ready — %d restaurants, "
+                "%d locations, %d cuisines",
+                len(repo.get_all()),
+                len(repo.get_locations()),
+                len(repo.get_cuisines()),
+            )
+        except Exception:
+            logger.exception("Background thread: failed to load dataset")
+
+    thread = threading.Thread(target=_load_data, daemon=True, name="dataset-loader")
+    thread.start()
+    logger.info("Startup: dataset loading started in background thread.")
+
     yield
+
     logger.info("Shutting down.")
 
 
