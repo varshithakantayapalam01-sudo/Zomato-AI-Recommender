@@ -18,6 +18,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from src.api.routes import router as v1_router, set_dependencies
+from src.config import settings
 from src.data.repository import RestaurantRepository
 from src.services.recommendation import RecommendationService
 
@@ -62,18 +63,12 @@ def create_app() -> FastAPI:
     )
 
     # ── CORS ────────────────────────────────────
+    # Origins are read from the ALLOWED_ORIGINS env var (comma-separated).
+    # Set it on Railway to include your Vercel domain(s).
+    # Defaults to localhost origins for local development.
     application.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://localhost:8000",
-            "http://127.0.0.1:8000",
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            # Production Vercel deployment
-            "https://zomato-ai-recommender.vercel.app",
-            # Vercel preview deployments (branch/PR deploys)
-            "https://zomato-ai-recommender-git-main-varshithakantayapalam01-sudos.vercel.app",
-        ],
+        allow_origins=settings.get_allowed_origins(),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

@@ -7,3 +7,6 @@ testpaths = [
 pythonpath = [
     ".",
 ]
+
+# Install dev dependencies for local testing:
+#   pip install -r requirements-dev.txt

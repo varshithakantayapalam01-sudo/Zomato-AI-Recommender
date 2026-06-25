@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "echo window.RAILWAY_API_URL = '\"$RAILWAY_API_URL\"'; > src/ui/frontend/config.js",
+  "buildCommand": "printf 'window.RAILWAY_API_URL = \"%s\";\\n' \"$RAILWAY_API_URL\" > src/ui/frontend/config.js",
   "outputDirectory": "src/ui/frontend",
   "routes": [
     {
@@ -9,3 +9,4 @@
     }
   ]
 }
+
