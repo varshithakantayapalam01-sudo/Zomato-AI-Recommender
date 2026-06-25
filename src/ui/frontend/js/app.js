@@ -12,7 +12,12 @@
 
   // In production (Vercel), config.js sets window.RAILWAY_API_URL to the Railway backend URL.
   // In local dev, config.js sets it to "" so we fall back to the relative /api/v1 path.
-  const API_BASE = (window.RAILWAY_API_URL || "") + "/api/v1";
+  let _railwayUrl = (window.RAILWAY_API_URL || "").trim();
+  // Guard: auto-prepend https:// if a host was given without a protocol
+  if (_railwayUrl && !_railwayUrl.startsWith("http://") && !_railwayUrl.startsWith("https://")) {
+    _railwayUrl = "https://" + _railwayUrl;
+  }
+  const API_BASE = _railwayUrl + "/api/v1";
 
   // ── DOM References ──────────────────────────────────────
   const locationSelect  = document.getElementById("location-select");
@@ -98,10 +103,49 @@
   }
 
   // ── Populate Dropdowns ──────────────────────────────────
+
+  /**
+   * Fetch a URL with automatic retries.
+   * On 503 (backend still starting / dataset loading), we wait and retry.
+   * On other errors we also retry up to maxRetries times.
+   *
+   * @param {string} url
+   * @param {number} maxRetries   - total attempts (default 10 ≈ ~30 s total)
+   * @param {number} baseDelayMs  - initial wait before first retry
+   * @returns {Promise<Response>}
+   */
+  async function fetchWithRetry(url, maxRetries = 10, baseDelayMs = 2000) {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const resp = await fetch(url);
+        // 503 means the backend is still loading the dataset — wait and retry
+        if (resp.status === 503) {
+          if (attempt < maxRetries - 1) {
+            const delay = baseDelayMs * Math.pow(1.4, attempt); // gentle exponential back-off
+            await new Promise((r) => setTimeout(r, delay));
+            continue;
+          }
+          // exhausted retries — surface the 503
+          return resp;
+        }
+        return resp;
+      } catch (networkErr) {
+        // Network error (CORS, server down, etc.)
+        if (attempt < maxRetries - 1) {
+          const delay = baseDelayMs * Math.pow(1.4, attempt);
+          await new Promise((r) => setTimeout(r, delay));
+        } else {
+          throw networkErr;
+        }
+      }
+    }
+  }
+
   async function loadLocations() {
+    locationSelect.innerHTML = '<option value="" disabled selected>Loading locations…</option>';
     try {
-      const resp = await fetch(`${API_BASE}/locations`);
-      if (!resp.ok) throw new Error("Failed to load locations");
+      const resp = await fetchWithRetry(`${API_BASE}/locations`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
       locationSelect.innerHTML = '<option value="" disabled selected>Select location</option>';
       data.locations.forEach((loc) => {
@@ -112,14 +156,14 @@
       });
     } catch (e) {
       console.error("Error loading locations:", e);
-      locationSelect.innerHTML = '<option value="" disabled selected>Error loading locations</option>';
+      locationSelect.innerHTML = '<option value="" disabled selected>Error loading locations — refresh to retry</option>';
     }
   }
 
   async function loadCuisines() {
     try {
-      const resp = await fetch(`${API_BASE}/cuisines`);
-      if (!resp.ok) throw new Error("Failed to load cuisines");
+      const resp = await fetchWithRetry(`${API_BASE}/cuisines`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
       cuisineSelect.innerHTML = '<option value="">Any cuisine</option>';
       data.cuisines.forEach((c) => {

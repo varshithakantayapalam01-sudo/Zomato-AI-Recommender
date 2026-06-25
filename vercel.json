@@ -1,7 +1,7 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "sh -c \"echo \\\"window.RAILWAY_API_URL = '${RAILWAY_API_URL}';\\\" > src/ui/frontend/config.js\"",
+  "buildCommand": "sh -c \"printf \\\"window.RAILWAY_API_URL = '%s';\\\" \\\"$(echo -n ${RAILWAY_API_URL} | tr -d '[:space:]')\\\" > src/ui/frontend/config.js\"",
   "outputDirectory": "src/ui/frontend",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
