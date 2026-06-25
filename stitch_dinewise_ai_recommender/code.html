@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SavorAI - Precision Palate Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#434654",
+                        "primary-container": "#ff6b35",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary-fixed": "#dfe2f3",
+                        "on-surface-variant": "#e1bfb5",
+                        "tertiary-fixed-dim": "#c3c6d7",
+                        "on-error": "#690005",
+                        "outline": "#a98a80",
+                        "primary-fixed-dim": "#ffb59d",
+                        "surface-container-high": "#1c2b3c",
+                        "tertiary": "#c3c6d7",
+                        "secondary-fixed": "#ffdf92",
+                        "surface-bright": "#2c3a4c",
+                        "surface": "#051424",
+                        "surface-container-low": "#0d1c2d",
+                        "on-surface": "#d4e4fa",
+                        "on-secondary-container": "#382a00",
+                        "inverse-on-surface": "#233143",
+                        "on-secondary": "#3e2e00",
+                        "secondary-container": "#b68e01",
+                        "on-primary-fixed-variant": "#832600",
+                        "primary-fixed": "#ffdbd0",
+                        "inverse-surface": "#d4e4fa",
+                        "on-primary-container": "#5f1900",
+                        "surface-container-lowest": "#010f1f",
+                        "on-tertiary-container": "#2e313f",
+                        "surface-container-highest": "#273647",
+                        "inverse-primary": "#ab3500",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#051424",
+                        "surface-variant": "#273647",
+                        "on-secondary-fixed-variant": "#594400",
+                        "tertiary-container": "#9699a9",
+                        "secondary": "#eec140",
+                        "background": "#051424",
+                        "secondary-fixed-dim": "#eec140",
+                        "on-background": "#d4e4fa",
+                        "primary": "#ffb59d",
+                        "on-tertiary-fixed": "#171b28",
+                        "surface-container": "#122131",
+                        "on-tertiary": "#2c303d",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#390c00",
+                        "surface-tint": "#ffb59d",
+                        "outline-variant": "#594139",
+                        "error": "#ffb4ab",
+                        "on-primary": "#5d1900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "base": "8px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "xl": "64px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "sm": "12px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg-mobile": ["Outfit"],
+                        "headline-sm": ["Outfit"],
+                        "display-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background: radial-gradient(circle at top right, #1c2b3c 0%, #051424 50%, #010f1f 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .ambient-glow {
+            box-shadow: 0 0 40px -10px rgba(255, 107, 53, 0.15);
+        }
+        .solar-flare {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7c948 100%);
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #eec140;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(238, 193, 64, 0.5);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        [data-weight="fill"] .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="text-on-background antialiased overflow-x-hidden flex flex-col items-center">
+<!-- TopNavBar -->
+<nav class="bg-surface/10 backdrop-blur-xl fixed top-0 w-full flex justify-between items-center h-20 px-margin-desktop z-50 border-b border-white/10 shadow-[0_8px_32px_0_rgba(255,181,157,0.1)]">
+<div class="font-headline-md text-headline-md font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">SavorAI</div>
+<div class="hidden md:flex gap-md">
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md transition-all" href="#">Discover</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Trending</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Saved</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">History</a>
+</div>
+<button class="font-label-md text-label-md text-primary hover:scale-105 transition-transform duration-200 active:scale-95 transition-all">
+            Sign In
+        </button>
+</nav>
+<!-- Main Container -->
+<main class="w-full max-w-7xl px-margin-mobile md:px-margin-desktop pt-32 pb-xl flex flex-col gap-lg items-center">
+<!-- Header -->
+<header class="text-center w-full max-w-3xl mb-md">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-transparent bg-clip-text bg-gradient-to-r from-primary-container to-secondary-container mb-xs inline-flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-primary-container" style="font-size: inherit;">restaurant</span>
+                AI Restaurant Recommender
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm">Discover your perfect dining experience, powered by AI</p>
+</header>
+<!-- Preference Form Card -->
+<div class="glass-panel ambient-glow rounded-xl w-full max-w-3xl p-md md:p-lg flex flex-col gap-md transition-all duration-300">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Location -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">location_on</span> Location
+                    </label>
+<div class="relative">
+<select class="w-full bg-surface/30 border border-outline-variant/30 rounded-lg py-sm pl-sm pr-lg font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary/50 appearance-none transition-all outline-none">
+<option class="bg-surface text-on-surface" value="bangalore">Bangalore</option>
+<option class="bg-surface text-on-surface" value="delhi">Delhi</option>
+<option class="bg-surface text-on-surface" value="kolkata">Kolkata</option>
+<option class="bg-surface text-on-surface" value="koramangala">Koramangala</option>
+<option class="bg-surface text-on-surface" value="indiranagar">Indiranagar</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">arrow_drop_down</span>
+</div>
+</div>
+<!-- Cuisine -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">local_pizza</span> Cuisine <span class="text-on-surface-variant/50 ml-auto font-normal">(Optional)</span>
+</label>
+<div class="relative">
+<select class="w-full bg-surface/30 border border-outline-variant/30 rounded-lg py-sm pl-sm pr-lg font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary/50 appearance-none transition-all outline-none">
+<option class="bg-surface text-on-surface" value="italian">Italian</option>
+<option class="bg-surface text-on-surface" value="chinese">Chinese</option>
+<option class="bg-surface text-on-surface" value="north_indian">North Indian</option>
+<option class="bg-surface text-on-surface" value="cafe">Cafe</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">arrow_drop_down</span>
+</div>
+</div>
+<!-- Budget -->
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">payments</span> Budget
+                    </label>
+<div class="flex gap-sm w-full">
+<button class="flex-1 bg-surface/30 border border-outline-variant/30 rounded-full py-sm font-label-md text-label-md text-on-surface-variant hover:border-secondary/50 transition-all">Low</button>
+<button class="flex-1 solar-flare rounded-full py-sm font-label-md text-label-md text-surface-container-lowest shadow-[0_0_15px_rgba(255,107,53,0.3)] transition-all transform hover:scale-[1.02]">Medium</button>
+<button class="flex-1 bg-surface/30 border border-outline-variant/30 rounded-full py-sm font-label-md text-label-md text-on-surface-variant hover:border-secondary/50 transition-all">High</button>
+</div>
+</div>
+<!-- Rating -->
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex justify-between items-center w-full">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px] text-secondary" data-weight="fill">star</span> Minimum Rating</span>
+<span class="font-headline-sm text-headline-sm text-secondary">4.0</span>
+</label>
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer range-slider mt-sm" max="5" min="0" step="0.1" type="range" value="4.0"/>
+</div>
+<!-- Additional Prefs -->
+<div class="flex flex-col gap-xs md:col-span-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">edit_note</span> Additional Preferences
+                    </label>
+<textarea class="w-full bg-surface/30 border border-outline-variant/30 rounded-lg p-sm font-body-md text-body-md text-on-surface focus:border-secondary focus:ring-1 focus:ring-secondary/50 outline-none resize-none h-24 placeholder:text-on-surface-variant/40" placeholder="e.g. family-friendly, outdoor seating, quick service"></textarea>
+</div>
+</div>
+<button class="w-full solar-flare rounded-lg py-sm font-label-md text-label-md text-surface-container-lowest shadow-[0_0_20px_rgba(255,107,53,0.4)] transition-all transform hover:scale-[1.01] hover:shadow-[0_0_30px_rgba(255,107,53,0.6)] flex justify-center items-center gap-xs mt-sm">
+<span class="material-symbols-outlined" style="font-size: 20px;">auto_awesome</span> Get Recommendations
+            </button>
+</div>
+<!-- Applied Filters -->
+<div class="w-full max-w-5xl flex flex-wrap justify-center gap-sm">
+<span class="glass-panel px-sm py-xs rounded-full font-label-sm text-label-sm text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">location_on</span> Bangalore
+            </span>
+<span class="glass-panel px-sm py-xs rounded-full font-label-sm text-label-sm text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">payments</span> Medium
+            </span>
+<span class="glass-panel px-sm py-xs rounded-full font-label-sm text-label-sm text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">local_pizza</span> Italian
+            </span>
+<span class="glass-panel px-sm py-xs rounded-full font-label-sm text-label-sm text-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-weight="fill">star</span> ≥4.0
+            </span>
+</div>
+<!-- AI Summary Banner -->
+<div class="glass-panel rounded-lg w-full max-w-5xl p-md flex items-start md:items-center gap-md border-l-4 border-l-primary-container">
+<div class="bg-primary-container/20 p-sm rounded-full flex-shrink-0" data-weight="fill">
+<span class="material-symbols-outlined text-primary-container">smart_toy</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic">
+                "Based on your preferences for Italian cuisine in Bangalore with a medium budget, here are my top picks for you…"
+            </p>
+</div>
+<!-- Results Grid -->
+<div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-md mt-sm">
+<!-- Card 1 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-primary-container/20"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-sm mb-xs">
+<span class="solar-flare text-surface-container-lowest font-headline-sm text-headline-sm w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-lg">1</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Truffles</h3>
+</div>
+<div class="flex gap-xs flex-wrap">
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Italian</span>
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Cafe</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-headline-sm text-headline-sm text-on-surface">
+                            4.5 <span class="material-symbols-outlined text-[20px] text-secondary" data-weight="fill">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">₹1,200 for two</span>
+</div>
+</div>
+<div class="bg-surface-container/50 rounded-lg p-sm mt-xs border border-white/5 z-10 relative">
+<div class="absolute left-sm top-sm text-primary-container/30">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant pl-md relative z-10 text-sm">
+                        Highly rated Italian spot within your budget, known for family-friendly ambiance and quick service.
+                    </p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-primary-container/20"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-variant text-on-surface font-headline-sm text-headline-sm w-8 h-8 rounded-full flex items-center justify-center font-bold border border-white/10">2</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Toit Brewpub</h3>
+</div>
+<div class="flex gap-xs flex-wrap">
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Italian</span>
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Continental</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-headline-sm text-headline-sm text-on-surface">
+                            4.7 <span class="material-symbols-outlined text-[20px] text-secondary" data-weight="fill">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">₹2,000 for two</span>
+</div>
+</div>
+<div class="bg-surface-container/50 rounded-lg p-sm mt-xs border border-white/5 z-10 relative">
+<div class="absolute left-sm top-sm text-primary-container/30">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant pl-md relative z-10 text-sm">
+                        Premium craft brewery with excellent pizza and a vibrant atmosphere.
+                    </p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-primary-container/20"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-variant text-on-surface font-headline-sm text-headline-sm w-8 h-8 rounded-full flex items-center justify-center font-bold border border-white/10">3</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Chianti</h3>
+</div>
+<div class="flex gap-xs flex-wrap">
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Italian</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-headline-sm text-headline-sm text-on-surface">
+                            4.4 <span class="material-symbols-outlined text-[20px] text-secondary" data-weight="fill">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">₹1,800 for two</span>
+</div>
+</div>
+<div class="bg-surface-container/50 rounded-lg p-sm mt-xs border border-white/5 z-10 relative">
+<div class="absolute left-sm top-sm text-primary-container/30">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant pl-md relative z-10 text-sm">
+                        Authentic Italian dining with a romantic setting and stellar pasta.
+                    </p>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-primary-container/20"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-variant text-on-surface font-headline-sm text-headline-sm w-8 h-8 rounded-full flex items-center justify-center font-bold border border-white/10">4</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Sunny's</h3>
+</div>
+<div class="flex gap-xs flex-wrap">
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Continental</span>
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Italian</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-headline-sm text-headline-sm text-on-surface">
+                            4.6 <span class="material-symbols-outlined text-[20px] text-secondary" data-weight="fill">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">₹2,500 for two</span>
+</div>
+</div>
+<div class="bg-surface-container/50 rounded-lg p-sm mt-xs border border-white/5 z-10 relative">
+<div class="absolute left-sm top-sm text-primary-container/30">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant pl-md relative z-10 text-sm">
+                        A classic Bangalore institution offering sophisticated dining and high-quality ingredients.
+                    </p>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm relative overflow-hidden group md:col-span-2 md:max-w-[calc(50%-12px)] md:mx-auto">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-container/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-primary-container/20"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-variant text-on-surface font-headline-sm text-headline-sm w-8 h-8 rounded-full flex items-center justify-center font-bold border border-white/10">5</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Brik Oven</h3>
+</div>
+<div class="flex gap-xs flex-wrap">
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Italian</span>
+<span class="bg-secondary/10 text-secondary px-xs py-1 rounded font-label-sm text-label-sm">Pizza</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 font-headline-sm text-headline-sm text-on-surface">
+                            4.3 <span class="material-symbols-outlined text-[20px] text-secondary" data-weight="fill">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">₹1,000 for two</span>
+</div>
+</div>
+<div class="bg-surface-container/50 rounded-lg p-sm mt-xs border border-white/5 z-10 relative">
+<div class="absolute left-sm top-sm text-primary-container/30">
+<span class="material-symbols-outlined text-[16px]">format_quote</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant pl-md relative z-10 text-sm">
+                        Trendy pizzeria famous for sourdough crusts and casual vibes.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest w-full border-t border-outline-variant/20 flat no shadows flex flex-col justify-center items-center py-xl px-margin-desktop gap-sm mt-auto text-center">
+<div class="font-headline-sm text-headline-sm text-on-surface opacity-80 hover:opacity-100 transition-opacity">SavorAI</div>
+<div class="font-label-md text-label-md text-tertiary opacity-80">
+            Powered by Groq AI · Built with ❤️ · © 2026 SavorAI. Precision Palate Intelligence.
+        </div>
+<div class="flex gap-md mt-sm">
+<a class="font-label-md text-label-md text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">API Access</a>
+<a class="font-label-md text-label-md text-on-tertiary-fixed-variant hover:text-secondary transition-colors" href="#">Contact</a>
+</div>
+</footer>
+<script>
+        // Simple slider value update
+        const slider = document.querySelector('.range-slider');
+        const sliderValueDisplay = slider.previousElementSibling.querySelector('.font-headline-sm');
+        
+        slider.addEventListener('input', (e) => {
+            sliderValueDisplay.textContent = parseFloat(e.target.value).toFixed(1);
+        });
+    </script>
+</body></html>

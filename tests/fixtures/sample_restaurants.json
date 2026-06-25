@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Jalsa",
+    "location": "Banashankari",
+    "rate": "4.1/5",
+    "votes": 775,
+    "rest_type": "Casual Dining",
+    "cuisines": "North Indian, Mughlai, Chinese",
+    "approx_cost(for two people)": "800"
+  },
+  {
+    "name": "Spice Bazaar",
+    "location": "Jayanagar",
+    "rate": "NEW",
+    "votes": 0,
+    "rest_type": "Quick Service",
+    "cuisines": "South Indian",
+    "approx_cost(for two people)": "300"
+  },
+  {
+    "name": "Cafe Down The Alley",
+    "location": "Banashankari",
+    "rate": "3.8/5",
+    "votes": 120,
+    "rest_type": "Cafe",
+    "cuisines": "Cafe, Fast Food",
+    "approx_cost(for two people)": "500"
+  },
+  {
+    "name": "Grand Pavilion",
+    "location": "Indiranagar",
+    "rate": "-",
+    "votes": 10,
+    "rest_type": "Casual Dining",
+    "cuisines": "Mughlai, Biryani",
+    "approx_cost(for two people)": "1,600"
+  },
+  {
+    "name": "",
+    "location": "Banashankari",
+    "rate": "4.0/5",
+    "votes": 50,
+    "rest_type": "Quick Service",
+    "cuisines": "Chinese",
+    "approx_cost(for two people)": "150"
+  },
+  {
+    "name": "Invalid Location Cafe",
+    "location": null,
+    "rate": "3.5/5",
+    "votes": 5,
+    "rest_type": "Cafe",
+    "cuisines": "Italian",
+    "approx_cost(for two people)": "600"
+  },
+  {
+    "name": "Expensive Fine Dine",
+    "location": "Lavelle Road",
+    "rate": "4.9/5",
+    "votes": 2400,
+    "rest_type": "Fine Dining",
+    "cuisines": "Continental, Italian, French",
+    "approx_cost(for two people)": "3,000"
+  }
+]

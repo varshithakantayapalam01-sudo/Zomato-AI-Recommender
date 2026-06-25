@@ -1,0 +1,15 @@
+{
+  "summary": "Based on your medium budget and preference for Italian cuisine, here are the top recommendations.",
+  "recommendations": [
+    {
+      "id": "1",
+      "rank": 1,
+      "explanation": "Jalsa offers a rich ambiance with a highly rated selection of dishes."
+    },
+    {
+      "id": "2",
+      "rank": 2,
+      "explanation": "Cafe Down The Alley is a popular budget-friendly spot with a great cafe vibe."
+    }
+  ]
+}

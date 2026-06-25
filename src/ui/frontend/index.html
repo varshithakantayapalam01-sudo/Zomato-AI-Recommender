@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SavorAI — AI Restaurant Recommender</title>
+    <meta name="description" content="Discover your perfect dining experience with AI-powered restaurant recommendations. Powered by Groq AI and the Zomato dataset." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+    <!-- ── Top Navigation Bar ────────────────────────────── -->
+    <nav id="top-nav" class="top-nav">
+        <div class="nav-brand">SavorAI</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link active">Discover</a>
+        </div>
+    </nav>
+
+    <!-- ── Main Container ────────────────────────────────── -->
+    <main class="main-container">
+
+        <!-- Header -->
+        <header class="hero-header">
+            <h1 class="hero-title">
+                <span class="material-symbols-outlined hero-icon">restaurant</span>
+                AI Restaurant Recommender
+            </h1>
+            <p class="hero-subtitle">Discover your perfect dining experience, powered by AI</p>
+        </header>
+
+        <!-- ── Preference Form Card ──────────────────────── -->
+        <section id="preference-form" class="glass-panel ambient-glow form-card">
+            <form id="recommend-form" autocomplete="off">
+                <div class="form-grid">
+                    <!-- Location -->
+                    <div class="input-group">
+                        <label class="input-label" for="location-select">
+                            <span class="material-symbols-outlined label-icon">location_on</span> Location
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="location-select" required>
+                                <option value="" disabled selected>Loading locations…</option>
+                            </select>
+                            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+
+                    <!-- Cuisine -->
+                    <div class="input-group">
+                        <label class="input-label" for="cuisine-select">
+                            <span class="material-symbols-outlined label-icon">local_pizza</span> Cuisine
+                            <span class="label-optional">(Optional)</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="cuisine-select">
+                                <option value="">Any cuisine</option>
+                            </select>
+                            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+                        </div>
+                    </div>
+
+                    <!-- Budget (range slider for amount) -->
+                    <div class="input-group full-width">
+                        <label class="input-label range-label" for="budget-slider">
+                            <span class="label-left">
+                                <span class="material-symbols-outlined label-icon">payments</span> Budget (for two)
+                            </span>
+                            <span class="range-value" id="budget-value">₹0 – ₹2,000</span>
+                        </label>
+                        <div class="dual-range-container">
+                            <input type="range" id="budget-slider-min" class="range-slider range-slider-min" min="0" max="5000" step="100" value="0" />
+                            <input type="range" id="budget-slider-max" class="range-slider range-slider-max" min="0" max="5000" step="100" value="2000" />
+                            <div class="range-track">
+                                <div class="range-track-fill" id="budget-track-fill"></div>
+                            </div>
+                        </div>
+                        <div class="range-limits">
+                            <span>₹0</span>
+                            <span>₹5,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Minimum Rating -->
+                    <div class="input-group full-width">
+                        <label class="input-label range-label" for="rating-slider">
+                            <span class="label-left">
+                                <span class="material-symbols-outlined label-icon filled-icon">star</span> Minimum Rating
+                            </span>
+                            <span class="range-value rating-display" id="rating-value">0.0</span>
+                        </label>
+                        <input type="range" id="rating-slider" class="range-slider" min="0" max="5" step="0.1" value="0" />
+                    </div>
+
+                    <!-- Additional Preferences -->
+                    <div class="input-group full-width">
+                        <label class="input-label" for="additional-prefs">
+                            <span class="material-symbols-outlined label-icon">edit_note</span> Additional Preferences
+                        </label>
+                        <textarea id="additional-prefs" placeholder="e.g. family-friendly, outdoor seating, quick service" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" id="submit-btn" class="submit-btn solar-flare">
+                    <span class="material-symbols-outlined btn-icon">auto_awesome</span>
+                    Get Recommendations
+                </button>
+            </form>
+        </section>
+
+        <!-- ── Applied Filters (hidden until results) ───── -->
+        <div id="applied-filters" class="applied-filters hidden">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- ── AI Summary Banner (hidden until results) ── -->
+        <div id="ai-summary" class="glass-panel summary-banner hidden">
+            <div class="summary-icon-wrapper">
+                <span class="material-symbols-outlined summary-icon">smart_toy</span>
+            </div>
+            <p class="summary-text" id="summary-text"></p>
+        </div>
+
+        <!-- ── Fallback Notice (hidden unless fallback) ── -->
+        <div id="fallback-notice" class="fallback-notice hidden">
+            <span class="material-symbols-outlined">info</span>
+            <span>AI service temporarily unavailable. Showing top-rated results based on data.</span>
+        </div>
+
+        <!-- ── Loading Skeleton (hidden by default) ────── -->
+        <div id="loading-skeleton" class="results-grid hidden">
+            <div class="skeleton-card glass-panel"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div><div class="skeleton-block"></div></div>
+            <div class="skeleton-card glass-panel"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div><div class="skeleton-block"></div></div>
+            <div class="skeleton-card glass-panel"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div><div class="skeleton-block"></div></div>
+            <div class="skeleton-card glass-panel"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div><div class="skeleton-block"></div></div>
+        </div>
+
+        <!-- ── Results Grid (hidden until results) ─────── -->
+        <div id="results-grid" class="results-grid hidden">
+            <!-- Populated by JS -->
+        </div>
+
+        <!-- ── Error State (hidden by default) ─────────── -->
+        <div id="error-state" class="error-state glass-panel hidden">
+            <span class="material-symbols-outlined error-icon">error_outline</span>
+            <p class="error-message" id="error-message"></p>
+            <div class="error-suggestions" id="error-suggestions"></div>
+        </div>
+
+        <!-- ── Empty State (hidden by default) ─────────── -->
+        <div id="empty-state" class="empty-state glass-panel hidden">
+            <span class="material-symbols-outlined empty-icon">search_off</span>
+            <p class="empty-message">No restaurants found matching your criteria.</p>
+            <p class="empty-hint">Try broadening your filters — relax the cuisine, lower the minimum rating, or expand the budget range.</p>
+        </div>
+
+    </main>
+
+    <!-- ── Footer ────────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="footer-brand">SavorAI</div>
+        <div class="footer-copy">Powered by Groq AI · Built with ❤️ · © 2026 SavorAI</div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
