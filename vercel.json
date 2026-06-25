@@ -3,11 +3,8 @@
   "framework": null,
   "buildCommand": "sh -c \"echo \\\"window.RAILWAY_API_URL = '${RAILWAY_API_URL}';\\\" > src/ui/frontend/config.js\"",
   "outputDirectory": "src/ui/frontend",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
 
