@@ -5,6 +5,7 @@
  *   - Populate location & cuisine dropdowns on load
  *   - Submit preference form and render recommendations
  *   - Handle error, empty, fallback, and loading states
+ *   - Display cuisine-matched food images on cards
  */
 
 (function () {
@@ -59,6 +60,82 @@
     hide(resultsGrid);
     hide(errorState);
     hide(emptyState);
+  }
+
+  // ── Cuisine → Food Image Mapping ────────────────────────
+  // High-quality Unsplash images mapped to cuisine keywords.
+  // Uses specific photo IDs for consistency and reliability.
+  const CUISINE_IMAGES = {
+    "biryani":       "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&h=340&fit=crop&q=80",
+    "north indian":  "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=340&fit=crop&q=80",
+    "south indian":  "https://images.unsplash.com/photo-1630383249896-424e482df921?w=600&h=340&fit=crop&q=80",
+    "chinese":       "https://images.unsplash.com/photo-1525755662778-989d0524087e?w=600&h=340&fit=crop&q=80",
+    "italian":       "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&h=340&fit=crop&q=80",
+    "pizza":         "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&h=340&fit=crop&q=80",
+    "pasta":         "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=340&fit=crop&q=80",
+    "continental":   "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=340&fit=crop&q=80",
+    "mughlai":       "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&h=340&fit=crop&q=80",
+    "fast food":     "https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=600&h=340&fit=crop&q=80",
+    "burger":        "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=340&fit=crop&q=80",
+    "cafe":          "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&h=340&fit=crop&q=80",
+    "bakery":        "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=340&fit=crop&q=80",
+    "desserts":      "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&h=340&fit=crop&q=80",
+    "ice cream":     "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=600&h=340&fit=crop&q=80",
+    "thai":          "https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=600&h=340&fit=crop&q=80",
+    "japanese":      "https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=340&fit=crop&q=80",
+    "sushi":         "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&h=340&fit=crop&q=80",
+    "korean":        "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&h=340&fit=crop&q=80",
+    "mexican":       "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&h=340&fit=crop&q=80",
+    "mediterranean": "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=340&fit=crop&q=80",
+    "kebab":         "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=600&h=340&fit=crop&q=80",
+    "seafood":       "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=600&h=340&fit=crop&q=80",
+    "street food":   "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&h=340&fit=crop&q=80",
+    "tandoori":      "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&h=340&fit=crop&q=80",
+    "rolls":         "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&h=340&fit=crop&q=80",
+    "beverages":     "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=600&h=340&fit=crop&q=80",
+    "juice":         "https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=600&h=340&fit=crop&q=80",
+    "american":      "https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&h=340&fit=crop&q=80",
+    "arabian":       "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=600&h=340&fit=crop&q=80",
+    "wraps":         "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&h=340&fit=crop&q=80",
+    "sandwich":      "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&h=340&fit=crop&q=80",
+    "momos":         "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&h=340&fit=crop&q=80",
+    "healthy food":  "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=340&fit=crop&q=80",
+    "salad":         "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=340&fit=crop&q=80",
+    "steak":         "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=340&fit=crop&q=80",
+    "grill":         "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=340&fit=crop&q=80",
+    "bbq":           "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=340&fit=crop&q=80",
+    "dosa":          "https://images.unsplash.com/photo-1630383249896-424e482df921?w=600&h=340&fit=crop&q=80",
+    "idli":          "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&h=340&fit=crop&q=80",
+    "chettinad":     "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=340&fit=crop&q=80",
+    "kerala":        "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=340&fit=crop&q=80",
+    "andhra":        "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=340&fit=crop&q=80",
+    "finger food":   "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&h=340&fit=crop&q=80",
+    "pan asian":     "https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=340&fit=crop&q=80",
+    "asian":         "https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=340&fit=crop&q=80",
+    "tibetan":       "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&h=340&fit=crop&q=80",
+    "european":      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=340&fit=crop&q=80",
+    "french":        "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=340&fit=crop&q=80",
+  };
+
+  // Default food image when no cuisine match
+  const DEFAULT_FOOD_IMAGE = "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=340&fit=crop&q=80";
+
+  /**
+   * Get the best food image URL for a given cuisine string.
+   * Tries each cuisine keyword against our map, returns the first match.
+   */
+  function getFoodImage(cuisineStr) {
+    if (!cuisineStr) return DEFAULT_FOOD_IMAGE;
+    const cuisines = cuisineStr.split(",").map(c => c.trim().toLowerCase());
+    for (const c of cuisines) {
+      // Direct match
+      if (CUISINE_IMAGES[c]) return CUISINE_IMAGES[c];
+      // Partial match (e.g., "north indian" inside "North Indian, Mughlai")
+      for (const [key, url] of Object.entries(CUISINE_IMAGES)) {
+        if (c.includes(key) || key.includes(c)) return url;
+      }
+    }
+    return DEFAULT_FOOD_IMAGE;
   }
 
   // ── Budget Dual-Range Logic ─────────────────────────────
@@ -214,27 +291,43 @@
         .map((c) => `<span class="cuisine-tag">${c}</span>`)
         .join("");
 
+      // Get cuisine-matched food image
+      const foodImageUrl = getFoodImage(rec.cuisine);
+
       card.innerHTML = `
-        <div class="card-glow"></div>
-        <div class="card-header">
-          <div class="card-left">
-            <div class="card-name-row">
-              <span class="rank-badge ${rec.rank === 1 ? 'rank-1' : ''}">${rec.rank}</span>
-              <h3 class="restaurant-name">${escapeHtml(rec.name)}</h3>
-            </div>
-            <div class="cuisine-tags">${tagsHtml}</div>
+        <div class="card-image-wrapper">
+          <img
+            class="card-food-image"
+            src="${foodImageUrl}"
+            alt="${escapeHtml(cuisines[0] || 'Food')} dish"
+            loading="lazy"
+            onerror="this.src='${DEFAULT_FOOD_IMAGE}'"
+          />
+          <div class="card-image-overlay"></div>
+          <div class="card-rank-overlay">
+            <span class="rank-badge ${rec.rank === 1 ? 'rank-1' : ''}">${rec.rank}</span>
           </div>
-          <div class="card-right">
-            <div class="card-rating">
+          <div class="card-rating-overlay">
+            <span class="card-rating-pill">
               ${rec.rating.toFixed(1)}
-              <span class="material-symbols-outlined">star</span>
-            </div>
-            <span class="card-cost">${formatCurrency(rec.estimated_cost)} for two</span>
+              <span class="material-symbols-outlined filled-icon" style="font-size:14px;">star</span>
+            </span>
           </div>
         </div>
-        <div class="card-explanation">
-          <span class="material-symbols-outlined explanation-quote">format_quote</span>
-          <p class="explanation-text">${escapeHtml(rec.explanation)}</p>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-left">
+              <h3 class="restaurant-name">${escapeHtml(rec.name)}</h3>
+              <div class="cuisine-tags">${tagsHtml}</div>
+            </div>
+            <div class="card-right">
+              <span class="card-cost">${formatCurrency(rec.estimated_cost)} for two</span>
+            </div>
+          </div>
+          <div class="card-explanation">
+            <span class="material-symbols-outlined explanation-quote">format_quote</span>
+            <p class="explanation-text">${escapeHtml(rec.explanation)}</p>
+          </div>
         </div>
       `;
       resultsGrid.appendChild(card);
