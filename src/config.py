@@ -28,7 +28,10 @@ class Settings(BaseSettings):
         "http://localhost:8000,"
         "http://127.0.0.1:8000,"
         "http://localhost:3000,"
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000,"
+        "https://zomato-ai-recommender-u7jj.vercel.app,"
+        "https://zomato-ai-recommender.vercel.app,"
+        "https://zomato-ai-recommender-three.vercel.app"
     )
 
     def get_allowed_origins(self) -> List[str]:

@@ -1,9 +1,13 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "sh -c \"printf \\\"window.RAILWAY_API_URL = '%s';\\\" \\\"$(echo -n ${RAILWAY_API_URL} | tr -d '[:space:]')\\\" > src/ui/frontend/config.js\"",
+  "buildCommand": "echo 'window.RAILWAY_API_URL = \"\";' > src/ui/frontend/config.js",
   "outputDirectory": "src/ui/frontend",
   "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://zomato-ai-recommender-production.up.railway.app/api/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
